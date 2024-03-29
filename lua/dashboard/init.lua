@@ -237,6 +237,14 @@ function db:load_theme(opts)
   })
 end
 
+local function add_update_footer_command(bufnr)
+  api.nvim_create_user_command('DashboardUpdateFooter', function(args)
+    local first_line = api.nvim_buf_line_count(bufnr)
+    api.nvim_buf_set_lines(bufnr, first_line - 1, -1, false, utils.center_align({ args.args }))
+    vim.bo[bufnr].modified = false
+  end, { nargs = '*' })
+end
+
 -- create dashboard instance
 function db:instance()
   local mode = api.nvim_get_mode().mode
@@ -255,6 +263,8 @@ function db:instance()
   else
     self.bufnr = api.nvim_get_current_buf()
   end
+
+  add_update_footer_command(self.bufnr)
 
   self.winid = api.nvim_get_current_win()
   api.nvim_win_set_buf(self.winid, self.bufnr)

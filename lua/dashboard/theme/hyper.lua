@@ -455,8 +455,6 @@ local function gen_footer(config)
 
   local first_line = api.nvim_buf_line_count(config.bufnr)
   api.nvim_buf_set_lines(config.bufnr, first_line, -1, false, utils.center_align(footer))
-
-  ---@diagnostic disable-next-line: param-type-mismatch
   for i, _ in pairs(footer) do
     api.nvim_buf_add_highlight(config.bufnr, 0, 'DashboardFooter', first_line + i - 1, 0, -1)
   end
@@ -509,7 +507,7 @@ local function theme_instance(config)
       - 2
     local fill = utils.generate_empty_table(size)
     api.nvim_buf_set_lines(config.bufnr, 0, 0, false, fill)
-    vim.bo[config.bufnr].modifiable = false
+    vim.bo[config.bufnr].modifiable = true
     vim.bo[config.bufnr].modified = false
     --defer until next event loop
     vim.schedule(function()
